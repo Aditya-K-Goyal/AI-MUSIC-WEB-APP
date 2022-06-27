@@ -1,9 +1,11 @@
 song_1 ="";
 song_2 ="";
+peterpan_song="";
 leftWristX = 0;
 leftWristY = 0;
 rightWristX = 0;
 rightWristY = 0;
+scoreLeftWristY =0;
 function preload()
 {
     song_1 = loadSound("music.mp3");
@@ -21,6 +23,7 @@ function setup()
 function gotPoses(results){
     if(results.length >0){
         console.log(results);
+        scoreLeftWristY = results[0].pose.keypoints[9].score;
         leftWristX = results[0].pose.leftWrist.x;
         leftWristY = results[0].pose.leftWrist.y;
         console.log("leftWristX = " + leftWristX + " , leftWristY = " + leftWristY);
@@ -32,6 +35,21 @@ function gotPoses(results){
 function draw()
 {
     image(video,0,0,600,500);
+    stroke("#ff2455");
+    fill("#ff2455");
+    peterpan_song = song_1.isPlaying();
+    console.log(peterpan_song);
+    if(scoreLeftWristY > 0.2)
+    {
+        circle(leftWristX,leftWristY,20);
+        song_2.stop();
+        if(peterpan_song == false){
+            song_1.play();
+        }
+        else{
+            document.getElementById("song_name").innerHTML ="Song Name :Peter Pan Song";
+        }
+    }
 }
 function modelLoaded()
 {
